@@ -1,5 +1,5 @@
 import React from 'react';
-import {GridList, GridTile, Paper} from 'material-ui';
+import {GridList, GridTile, Paper, VirtualGridList, Utils} from 'material-ui';
 
 import StarBorder from 'material-ui/svg-icons/toggle/star-border';
 import IconButton from 'icon-button';
@@ -188,6 +188,15 @@ class GridListPage extends React.Component {
     ];
 
     let gradientBg = 'linear-gradient(to bottom, rgba(0,0,0,0.7) 0%,rgba(0,0,0,0.3) 70%,rgba(0,0,0,0) 100%)';
+    let tilesDataProvider = function(offset, count) {
+      let data = [], i;
+      for (i = offset; i < offset + count; i++) {
+        data.push(Utils.Extend({
+          offset: i
+        }, tilesData[i%8]));
+      }
+      return data;
+    }
 
     return (
       <ComponentDoc
@@ -208,6 +217,21 @@ class GridListPage extends React.Component {
 
         <CodeExample code={Code}>
           <div style={{display: 'flex', flexWrap: 'wrap', justifyContent: 'space-around'}}>
+            {/* Virtual grid list */}
+            <VirtualGridList
+              cellHeight={200}
+              dataProvider={tilesDataProvider}
+              dataCount={10000}
+              style={{width: 320, height: 640, marginBottom: 24}}
+            >
+              {
+                (tile) => <GridTile
+                  title={(tile.offset + 1) + ' ' + tile.title}
+                  subtitle={<span>by <b>{tile.author}</b></span>}
+                  actionIcon={<IconButton><StarBorder color="white"/></IconButton>}
+                ><img src={tile.img} /></GridTile>
+                }
+            </VirtualGridList>
             {/* Basic grid list with mostly default options */}
             <GridList
               cellHeight={200}
@@ -250,4 +274,4 @@ class GridListPage extends React.Component {
 
 }
 
-export default GridListPage;
+module.exports = GridListPage;

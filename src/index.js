@@ -74,4 +74,5 @@ export default {
   ToolbarTitle: require('./toolbar/toolbar-title'),
   Tooltip: require('./tooltip'),
   Utils: require('./utils/'),
+  VirtualGridList: require('./grid-list/virtual-grid-list'),
 };
